@@ -1,5 +1,6 @@
 import React from 'react';
 import './MovingForm.css'; 
+import {  Dropdown } from 'semantic-ui-react'
 
 class MasterForm extends React.Component {
     constructor(props) {
@@ -13,7 +14,21 @@ class MasterForm extends React.Component {
         contactMethod:'',
         username: '',
         password: '',
-        movingservices: ''
+        movingservices: false,
+        supplyservices: false,
+        storageservices: false,
+        packingservices: false,
+        rearrangingservices: false,
+
+        movingFromAddress: '',
+        movingFromBuildingType: '',
+        movingFromSquareFeet: '',
+        movingToAddress: '',
+        movingToBuildingType:'',
+        movingToSquareFeet:'',
+
+        movingDate: '',
+        movingTime: ''
       }
     }
   
@@ -29,23 +44,64 @@ class MasterForm extends React.Component {
       })   
       console.log(this.state); 
     }
-     
+    handleCheck = event => {
+      const {name,checked} = event.target;
+      console.log("Event Target", event.target)
+      console.log("Name", name); 
+      console.log("Checked", checked); 
+      this.setState({
+        [name]: checked
+      })   
+
+
+      console.log(this.state); 
+    }
+    onChangeDropdown = (event,data) => {
+      const name=data.name;
+      const value = data.value;
+      console.log(event)
+      console.log(data);
+      console.log(data.name)
+      console.log(data.value)
+      this.setState({
+          [name]:value
+      })
+    }
     handleSubmit = event => {
       event.preventDefault()
-      const { firstName, lastName, email, phonenumber, contactMethod, username, password } = this.state
+      const { 
+          firstName, 
+          lastName, 
+          email, 
+          phonenumber, 
+          contactMethod, 
+          username, 
+          password, 
+          movingservices,
+          supplyservices, 
+          storageservices,
+          packingservices,
+          rearrangingservices,
+          movingFromBuildingType
+      } = this.state
+
       alert(`Your registration detail: \n 
              First Name: ${firstName} \n
-             Last Name: ${lastName} \n
-             Phone Number: ${phonenumber} \n
-             Contact Method: ${contactMethod} \n
-             Email: ${email} \n 
-             Username: ${username} \n
-             Password: ${password}`)
+
+             Moving Services: ${movingservices} \n
+             Supply Services: ${supplyservices} \n
+             Storage Services: ${storageservices} \n
+             Packing Services:  ${packingservices} \n
+             Rearranging Services: ${rearrangingservices} \n
+             Moving From Building Type: ${movingFromBuildingType}
+             
+             `)
+             
     }
     
     _next = () => {
       let currentStep = this.state.currentStep
-      currentStep = currentStep >= 2? 3: currentStep + 1
+      currentStep = currentStep >= 3? 4: currentStep + 1
       this.setState({
         currentStep: currentStep
       })
@@ -78,7 +134,7 @@ class MasterForm extends React.Component {
   
   nextButton(){
     let currentStep = this.state.currentStep;
-    if(currentStep <3){
+    if(currentStep <4){
       return (
         <button 
           className="btn btn-primary float-right" 
@@ -90,6 +146,8 @@ class MasterForm extends React.Component {
     return null;
   }
     
+
+  /* -------------------- RENDER ----------------------- */
     render() {    
       return (
         <React.Fragment>
@@ -114,12 +172,33 @@ class MasterForm extends React.Component {
           <Step2 
             currentStep={this.state.currentStep} 
             handleChange={this.handleChange}
-            username={this.state.username}
+            handleCheck={this.handleCheck}
+
+            movingservices={this.state.movingservices}
+            supplyservices = {this.state.supplyservices}
+            storageservices={this.state.storageservices}
+            packingservices =   {this.state.packingservices}
+            rearrangingservices = {this.state.rearrangingservices}
           />
           <Step3 
             currentStep={this.state.currentStep} 
+            onChangeDropdown={this.onChangeDropdown}
             handleChange={this.handleChange}
-            password={this.state.password}
+
+            movingFromAddress={this.state.movingFromAddress}
+            movingFromBuildingType={this.state.movingFromBuildingType}
+            movingFromSquareFeet={this.state.movingFromSquareFeet}
+            movingToAddress={this.state.movingToAddress}
+            movingToBuildingType={this.state.movingToBuildingType}
+            movingToSquareFeet={this.state.movingToSquareFeet}
+
+
+          />
+          <Step4 
+            currentStep={this.state.currentStep} 
+            handleChange={this.handleChange}
+            movingDate = {this.state.movingDate}
+            movingTime ={this.state.movingTime}
           />
           {this.previousButton()}
           {this.nextButton()}
@@ -132,6 +211,7 @@ class MasterForm extends React.Component {
     }
   }
   
+  /****** FORM PAGE 1 *********/
   function Step1(props) {
     if (props.currentStep !== 1) {
       return null
@@ -140,7 +220,7 @@ class MasterForm extends React.Component {
       <div>
         <h2 className ="mb-4">Tell us about yourself</h2>
         <div className="form-group form-row row mb-2">
-          <div class="col-sm-12">
+          <div className="col-sm-12">
             <input
               className="form-control"
               id="firstName"
@@ -153,7 +233,7 @@ class MasterForm extends React.Component {
           </div>
         </div>
         <div className="form-group form-row row mb-2">
-          <div class="col-sm-12">
+          <div className="col-sm-12">
             <input
               className="form-control"
               id="lastName"
@@ -167,7 +247,7 @@ class MasterForm extends React.Component {
         </div>
         
         <div className="form-group form-row row mb-2">
-          <div class="col-sm-12">
+          <div className="col-sm-12">
             <input
               className="form-control"
               id="email"
@@ -180,7 +260,7 @@ class MasterForm extends React.Component {
           </div>
         </div>
         <div className="form-group form-row row mb-2">
-          <div class="col-sm-12">
+          <div className="col-sm-12">
             <input
               className="form-control"
               id="phonenumber"
@@ -196,55 +276,251 @@ class MasterForm extends React.Component {
       </div>
     );
   }
-  
+
+  /****** FORM PAGE 2 *********/
   function Step2(props) {
     if (props.currentStep !== 2) {
       return null
     } 
     return(
       <div>
+        <h2 className ="mb-4">How can All-Rite help you?</h2>
+
+        <div className="col-12">
+          <input 
+          className = "mr-2"
+            type ="checkbox" 
+            name="movingservices" 
+            id="movingservices" 
+            defaultChecked = {props.movingservices}
+            onClick={props.handleCheck.bind(this)} 
+          />
+         <label>I need to move!</label>
+        </div>
+
         <div>
-      <input type ="checkbox" name="services" id="moving-services" value= {props.movingservices}               onChange={props.handleChange}
- />
+          <input 
+          className = "mr-2"
+            type ="checkbox" 
+            name="supplyservices" 
+            id="supplyservices" 
+            defaultChecked = {props.supplyservices}
+            onClick={props.handleCheck.bind(this)} 
+          />
+         <label>I need moving supplies</label>
         </div>
-        <div className="form-group form-row row mb-2">
-        <div class="col-sm-12">
-          <input
-            className="form-control"
-            id="phonenumber"
-            name="phonenumber"
-            type="text"
-            placeholder="Enter phone number"
-            value={props.phonenumber}
-            onChange={props.handleChange}
-            />
+        <div>
+          <input 
+          className = "mr-2"
+            type ="checkbox" 
+            name="storageservices" 
+            id="storageservices" 
+            defaultChecked = {props.storageservices}
+            onClick={props.handleCheck.bind(this)} 
+          />
+         <label>I need storage services</label>
         </div>
-      </div>
+        <div>
+          <input 
+          className = "mr-2"
+            type ="checkbox" 
+            name="packingservices" 
+            id="packingservices" 
+            defaultChecked = {props.packingservices}
+            onClick={props.handleCheck.bind(this)} 
+          />
+         <label>I need packing services</label>
+        </div>
+        <div>
+          <input 
+          className = "mr-2"
+            type ="checkbox" 
+            name="rearrangingservices" 
+            id="rearrangingservices" 
+            defaultChecked = {props.rearrangingservices}
+            onClick={props.handleCheck.bind(this)} 
+          />
+         <label>I need rearranging services</label>
+        </div>
+
+
     </div>
     );
   }
-  
+
+  /****** FORM PAGE 3 *********/
+
   function Step3(props) {
     if (props.currentStep !== 3) {
       return null
     } 
     return(
       <React.Fragment>
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input
-          className="form-control"
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Enter password"
-          value={props.password}
-          onChange={props.handleChange}
-          />      
+        <div>
+        <h2 className ="mb-4">Tell us more about your moving details</h2>
+
+          <div className="form-group row">
+            <div className="col-sm-6">
+              <label>Moving From</label>
+
+              <input
+              className="form-control"
+              id="movingFromAddress"
+              name="movingFromAddress"
+              type="text"
+              placeholder="Current address"
+              value={props.movingFromAddress}
+              onChange={props.handleChange}
+              /> 
+            </div>    
+            <div className="col-sm-6">
+              <label htmlFor="movingToAddress">Moving To</label>
+              <input
+                className="form-control"
+                id="movingToAddress"
+                name="movingToAddress"
+                type="text"
+                placeholder="Moving address"
+                value={props.movingToAddress}
+                onChange={props.handleChange}
+                />  
+            </div>    
+        </div>
+
+        <div className = "form-group row">
+          <div className="col-sm-6">
+            <Dropdown
+            name="movingFromBuildingType"
+            placeholder="What type of building is this?"
+            onChange={props.onChangeDropdown}
+            value={props.movingFromBuildingType}
+
+            fluid
+            selection
+            options={[{
+              key: 'House',
+              text:'House',
+              value:'House'
+            }, {
+              key: 'Apartment',
+              text:'Apartment',
+              value:'Apartment'
+            }, {
+              key: 'Condo',
+              text:'Condo',
+              value:'Condo'
+            }, {
+              key: 'Storage',
+              text: 'Storage',
+              value: 'Storage'
+            }
+          ]}
+            />
+          </div>
+          <div className="col-sm-6">
+            <Dropdown
+            name="movingToBuildingType"
+            placeholder="What type of building is this?"
+            onChange={props.onChangeDropdown}
+            value={props.movingToBuildingType}
+
+            fluid
+            selection
+            options={[{
+              key: 'House',
+              text:'House',
+              value:'House'
+            }, {
+              key: 'Apartment',
+              text:'Apartment',
+              value:'Apartment'
+            }, {
+              key: 'Condo',
+              text:'Condo',
+              value:'Condo'
+            }, {
+              key: 'Storage',
+              text: 'Storage',
+              value: 'Storage'
+            }
+          ]}
+            />
+          </div>
+        </div>
+        <div className="form-group row">
+            <div className="col-sm-6">
+              <input
+                className="form-control"
+                id="movingFromSquareFeet"
+                name="movingFromSquareFeet"
+                type="text"
+                placeholder="How big is your current space?"
+                value={props.movingFromSquareFeet}
+                onChange={props.handleChange}
+                />  
+            </div>    
+            <div className="col-sm-6">
+              <input
+                className="form-control"
+                id="movingToSquareFeet"
+                name="movingToSquareFeet"
+                type="text"
+                placeholder="How big is your destination space?"
+                value={props.movingToSquareFeet}
+                onChange={props.handleChange}
+                />  
+            </div> 
+
+        </div>
       </div>
-      <button className="btn btn-success btn-block mb-2">Sign up</button>
+
       </React.Fragment>
     );
   }
   
+    /****** FORM PAGE 4 *********/
+
+  function Step4(props) {
+    if (props.currentStep !== 4) {
+      return null
+    } 
+    return(
+      <React.Fragment>
+        <div>
+        <h2 className ="mb-4">What day would you like to move?</h2>
+        <div className="form-group row">
+          <div className="col-6">
+            <label htmlFor="movingDate">Moving Date</label>
+            <input
+              className="form-control"
+              id="movingDate"
+              name="movingDate"
+              type="date"
+              value={props.movingDate}
+              onChange={props.handleChange}
+            />   
+        </div>
+        <div className="col-6">
+            <label htmlFor="movingDate">Moving Time</label>
+            <input
+              className="form-control"
+              id="movingTime"
+              name="movingTime"
+              type="time"
+              value={props.movingTime}
+              onChange={props.handleChange}
+            />   
+        </div>
+      </div>
+      <div class="col-4 mx-auto">
+      <button className="btn  btn-success btn-block mb-2">Let's get you moving!</button>
+
+      </div>
+        </div>
+
+      </React.Fragment>
+    );
+  }
+
+  /************ EXPORTING FORM ********************/
   export default MasterForm;
