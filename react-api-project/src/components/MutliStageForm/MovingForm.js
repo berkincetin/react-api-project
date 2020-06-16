@@ -1,6 +1,7 @@
 import React from 'react';
 import './MovingForm.css'; 
 import {  Dropdown } from 'semantic-ui-react'
+const google = window.google
 
 class MasterForm extends React.Component {
     constructor(props) {
@@ -30,6 +31,12 @@ class MasterForm extends React.Component {
         movingDate: '',
         movingTime: ''
       }
+      this.autocomplete = null
+    }
+    componentDidMount() {
+      this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('movingFromAddress'), {})
+  
+      this.autocomplete.addListener("place_changed", this.handlePlaceSelect)
     }
   
     handleChange = event => {
@@ -44,6 +51,21 @@ class MasterForm extends React.Component {
       })   
       console.log(this.state); 
     }
+    handlePlaceSelect() {
+      let addressObject = this.autocomplete.getPlace()
+      let address = addressObject.address_components;
+      console.log(addressObject);
+      console.log(address);
+      // this.setState({
+      //   name: addressObject.name,
+      //   street_address: `${address[0].long_name} ${address[1].long_name}`,
+      //   city: address[4].long_name,
+      //   state: address[6].short_name,
+      //   zip_code: address[6].short_name,
+      //   googleMapLink: addressObject.url
+      // })
+    }
+    
     handleCheck = event => {
       const {name,checked} = event.target;
       console.log("Event Target", event.target)
