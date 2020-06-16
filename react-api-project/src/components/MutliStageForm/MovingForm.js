@@ -149,6 +149,8 @@ class MasterForm extends React.Component {
 
   /* -------------------- RENDER ----------------------- */
     render() {    
+      const { onRouteChange } = this.props;
+
       return (
         <React.Fragment>
         <div className = "booking-form">
@@ -199,6 +201,8 @@ class MasterForm extends React.Component {
             handleChange={this.handleChange}
             movingDate = {this.state.movingDate}
             movingTime ={this.state.movingTime}
+            onRouteChange = {onRouteChange}
+
           />
           {this.previousButton()}
           {this.nextButton()}
@@ -454,7 +458,7 @@ class MasterForm extends React.Component {
                 id="movingFromSquareFeet"
                 name="movingFromSquareFeet"
                 type="text"
-                placeholder="How big is your current space?"
+                placeholder="How big is your current space, in square feet?"
                 value={props.movingFromSquareFeet}
                 onChange={props.handleChange}
                 />  
@@ -465,7 +469,7 @@ class MasterForm extends React.Component {
                 id="movingToSquareFeet"
                 name="movingToSquareFeet"
                 type="text"
-                placeholder="How big is your destination space?"
+                placeholder="How big is your destination space, in square feet?"
                 value={props.movingToSquareFeet}
                 onChange={props.handleChange}
                 />  
@@ -513,7 +517,7 @@ class MasterForm extends React.Component {
         </div>
       </div>
       <div class="col-4 mx-auto">
-      <button className="btn  btn-success btn-block mb-2">Let's get you moving!</button>
+      <button onClick = {() => props.onRouteChange('success')} className="btn  btn-success btn-block mb-2">Let's get you moving!</button>
 
       </div>
         </div>
