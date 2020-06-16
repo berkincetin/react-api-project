@@ -9,7 +9,7 @@ class FormSuccess extends Component {
         return (
             <div>
                 <h2 className="mb-2">Thanks for submitting a moving request!</h2>
-                <h2 className="mb-2">We're working on it. We'll get you moving in no time!</h2>
+                <h3 className="mb-2">We're working on it. We'll get you moving in no time!</h3>
                 <p onClick = {() => onRouteChange("home")} className ="btn">Go home</p>
             </div>
         )

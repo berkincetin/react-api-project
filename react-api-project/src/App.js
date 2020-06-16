@@ -6,7 +6,7 @@ import SearchForm from './components/SearchForm/SearchForm';
 import MasterForm from './components/MutliStageForm/MovingForm';
 import Home from './components/Home/Home';
 import FormSuccess from './components/FormSuccess/FormSuccess';
-
+import ParlorForm from './components/LocationForm/LocationForm';
 // function App() {
 //   return (
 //     <div className="App">
@@ -35,7 +35,11 @@ class App extends Component {
         <Header />
 
         {route === "home" ?
+        <div>
+
         <Home onRouteChange={this.onRouteChange}/>
+        <ParlorForm />
+        </div>
         : (
           route ==="movingform" ?
           <MasterForm onRouteChange={this.onRouteChange}/>

@@ -101,6 +101,7 @@ class MasterForm extends React.Component {
     
     _next = () => {
       let currentStep = this.state.currentStep
+      console.log(this.state);
       currentStep = currentStep >= 3? 4: currentStep + 1
       this.setState({
         currentStep: currentStep
@@ -233,6 +234,7 @@ class MasterForm extends React.Component {
               placeholder="Enter first name"
               value={props.firstName}
               onChange={props.handleChange}
+              required
               />
           </div>
         </div>
